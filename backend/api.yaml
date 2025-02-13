@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: "Learn Words API"
+  description: "API for learning words with insertion, modification, and practice features"
+  version: "1.0.0"
+
+tags:
+  - name: words
+    description: Manage the words
+  - name: user
+    description: Operations about user
+
+servers:
+  - url: https://example.com/api
+    description: "Production Server"
+
+paths:
+  /addWord:
+    post:
+      summary: "Add a new word to learn"
+      description: "The user adds a word to their learning list"
+      tags: 
+        - words
+      parameters:
+        - name: lang
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Language code (e.g., 'en', 'it')"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Word'
+      responses:
+        '201':
+          description: "Successfully created"
+        '400':
+          description: "Invalid request"
+        '404':
+          description: "Language not found"
+        '409':
+          description: "Word already added"
+        '500':
+          description: "Internal server error"
+
+  /words:
+    get:
+      summary: "View all added words with optional filters"
+      tags: 
+        - words
+      parameters:
+        - name: lang
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Filter by language"
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+          description: "Filter by word type (noun, verb, etc.)"
+      responses:
+        '200':
+          description: "List of words"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Word'
+        '500':
+          description: "Internal server error"
+
+  /practice:
+    get:
+      summary: "Get a word for translation practice"
+      tags: 
+        - words
+      parameters:
+        - name: lang
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Language code for practice"
+      responses:
+        '200':
+          description: "Word to practice"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+        '500':
+          description: "Internal server error"
+
+  /word/{id}:
+    put:
+      summary: "Modify a word"
+      description: "Modify a word's details"
+      tags: 
+        - words
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: "Word ID"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Word'
+      responses:
+        '200':
+          description: "Word updated successfully"
+        '400':
+          description: "Invalid request"
+        '404':
+          description: "Word not found"
+        '500':
+          description: "Internal server error"
+  /register:
+    post:
+      summary: "Register a new user"
+      description: "User registration process"
+      tags: 
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistration'
+      responses:
+        '201':
+          description: "User registered successfully"
+        '400':
+          description: "Invalid request"
+        '409':
+          description: "User already exists"
+        '500':
+          description: "Internal server error"
+
+  /login:
+    post:
+      summary: "Authenticate a user"
+      description: "User authentication process"
+      tags: 
+        - user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+      responses:
+        '200':
+          description: "Authentication successful"
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '400':
+          description: "Invalid request"
+        '401':
+          description: "Unauthorized"
+        '500':
+          description: "Internal server error"
+
+  /user/logout:
+      get:
+        tags:
+          - user
+        summary: Logs out current logged in user session
+        description: ''
+        operationId: logoutUser
+        parameters: []
+        responses:
+          default:
+            description: successful operation
+
+components:
+  schemas:
+    Word:
+      type: object
+      properties:
+        native:
+          type: array
+          items:
+            type: string
+          description: "List of native words"
+        translation:
+          type: string
+          description: "Translated word"
+        type:
+          type: string
+          description: "Word type (noun, verb, etc.)"
+        note:
+          type: string
+          description: "Additional note"
+        example:
+          type: string
+          description: "Example sentence"
+
+    UserRegistration:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - email
+        - password
+
+    UserLogin:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password

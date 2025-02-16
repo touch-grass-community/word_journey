@@ -1,60 +1,88 @@
 package controllers
 
 import (
-	"encoding/json"
-	"fmt"
-	"language_learning_server/model"
-	"language_learning_server/services"
-	"log"
 	"net/http"
+	"world_journey_backend/model"
+	"world_journey_backend/services"
 )
 
 var (
-	WordsService services.WordsService = *services.NewWordsService()
+	LanguageLearningService services.LanguageLearningService = *services.NewLanguageLearningService()
 )
 
 func PostNewWord(w http.ResponseWriter, r *http.Request) {
-	result, err := WordsService.PostNewWord(r.Context())
-	if err != nil {
-		customErr, isCustomError := err.(*model.CustomError)
-		if isCustomError {
-			http.Error(w, customErr.Message, customErr.Code)
-		} else {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		}
-		fmt.Println(err)
+	var word model.Word
+	params, errParams := retrieveQueryParams(r, "userId", "language")
+	errBody := decodeAndValidateBody(r, &word)
+
+	if errParams != nil || errBody != nil {
+		respondWithError(w, http.StatusBadRequest, errParams.Error()+errBody.Error())
 		return
 	}
 
-	jsonData, err := json.Marshal(result)
-	if err != nil {
-		log.Fatal(("ERROR: " + err.Error()))
+	userId := params[0]
+	language := params[1]
+
+	if err := LanguageLearningService.PostNewWord(userId, language, word, r.Context()); err != nil {
+		handleServiceError(w, err)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(jsonData))
+	respondWithJSON(w, http.StatusOK, word)
 }
 
 func GetRandomWords(w http.ResponseWriter, r *http.Request) {
-	WordsService.GetRandomWords(r.Context())
+	params, errParams := retrieveQueryParams(r, "userId", "language")
+
+	if errParams != nil {
+		respondWithError(w, http.StatusBadRequest, errParams.Error())
+		return
+	}
+
+	userId := params[0]
+	language := params[1]
+
+	word, err := LanguageLearningService.GetRandomWords(userId, language, r.Context())
+	if err != nil {
+		handleServiceError(w, err)
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, word)
 }
 
-func checkMethod(w http.ResponseWriter, r *http.Request, method string) bool {
-	if r.Method != method {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-		return false
+func GetAllWords(w http.ResponseWriter, r *http.Request) {
+	params, errParams := retrieveQueryParams(r, "userId", "language")
+	if errParams != nil {
+		respondWithError(w, http.StatusBadRequest, errParams.Error())
+		return
 	}
-	return true
+
+	userId := params[0]
+	language := params[1]
+
+	word, err := LanguageLearningService.GetAllWords(userId, language, r.Context())
+	if err != nil {
+		handleServiceError(w, err)
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, word)
 }
 
 /*
 PATH paramenters:
 vars := mux.Vars(r)
-	lobbyID := vars["lobbyId"]
+id := vars["id"] // Gets the {id} parameter from the URL
 
 Query parameters:
+queryParam := r.URL.Query().Get("lang") // Example: ?lang=en
 
 Body parameters:
+var word Word
+err := json.NewDecoder(r.Body).Decode(&word)
+if err != nil {
+    http.Error(w, "Invalid JSON", http.StatusBadRequest)
+    return
+}
 */

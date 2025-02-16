@@ -1,2 +1,2 @@
 # word_journey
-A demo project to facilitate the learning of vocabulary of a new language. It is composed of a front-end react app, a GO back-end and a Mongo database.
+A demo project designed to facilitate learning vocabulary in a new language. It consists of a front-end React app, a Go back-end, and a MongoDB database (on a docker container).

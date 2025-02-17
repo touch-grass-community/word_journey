@@ -7,10 +7,10 @@ export const useDataContext = () => useContext(DataContext);
 
 //* export context for provider
 export const DataContextProvider = ({ children }) => {
-  const isLoggedIn = false;
+  const isLogged = false;
 
   const userLogin = {
-    isLoggedIn,
+    isLogged,
   };
 
   const dataContext = {

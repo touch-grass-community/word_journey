@@ -1,4 +1,7 @@
 /* ROOT VARIABLES */
+:root {
+  --navbar-height: 70px;
+}
 
 /* RESET RULES */
 a {
@@ -13,6 +16,11 @@ body {
 }
 
 /* GLOBAL RULES */
+
+#navbar {
+  height: var(--navbar-height);
+}
+
 .wrapper {
   min-height: 100vh;
   display: flex;

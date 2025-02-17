@@ -51,7 +51,7 @@ export default function NavBar() {
             variant="h6"
             noWrap
             component={Link}
-            to={`/`}
+            to={`/homepage`}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },

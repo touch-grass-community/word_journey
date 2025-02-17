@@ -15,19 +15,25 @@ servers:
     description: "Production Server"
 
 paths:
-  /addWord:
+  /words:
     post:
       summary: "Add a new word to learn"
       description: "The user adds a word to their learning list"
       tags: 
         - words
       parameters:
-        - name: lang
+        - name: userId
           in: query
           required: true
           schema:
             type: string
-          description: "Language code (e.g., 'en', 'it')"
+          description: "Id of the logged user"
+        - name: language
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Language identifier (e.g., 'english', 'italian')"
       requestBody:
         required: true
         content:
@@ -45,25 +51,23 @@ paths:
           description: "Word already added"
         '500':
           description: "Internal server error"
-
-  /words:
     get:
-      summary: "View all added words with optional filters"
+      summary: "View all added words"
       tags: 
         - words
       parameters:
-        - name: lang
+        - name: userId
           in: query
-          required: false
+          required: true
           schema:
             type: string
-          description: "Filter by language"
-        - name: type
+          description: "Id of the logged user"
+        - name: language
           in: query
-          required: false
+          required: true
           schema:
             type: string
-          description: "Filter by word type (noun, verb, etc.)"
+          description: "Language identifier (e.g., 'english', 'italian')"
       responses:
         '200':
           description: "List of words"
@@ -82,35 +86,55 @@ paths:
       tags: 
         - words
       parameters:
-        - name: lang
+        - name: userId
           in: query
           required: true
           schema:
             type: string
-          description: "Language code for practice"
+          description: "Id of the logged user"
+        - name: language
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Language identifier (e.g., 'english', 'italian')"
       responses:
         '200':
-          description: "Word to practice"
+          description: "Words to practice, in groups of 5"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Word'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Word'
         '500':
           description: "Internal server error"
 
-  /word/{id}:
+  /words/{word}:
     put:
       summary: "Modify a word"
       description: "Modify a word's details"
       tags: 
         - words
       parameters:
-        - name: id
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Id of the logged user"
+        - name: language
+          in: query
+          required: true
+          schema:
+            type: string
+          description: "Language identifier (e.g., 'english', 'italian')"
+        - name: word
           in: path
           required: true
           schema:
             type: string
-          description: "Word ID"
+          description: "Word in the target language"
       requestBody:
         required: true
         content:
@@ -230,7 +254,7 @@ components:
           type: string
         email:
           type: string
-        password:
+        passwordHash:
           type: string
       required:
         - username
@@ -242,7 +266,7 @@ components:
       properties:
         email:
           type: string
-        password:
+        passwordHash:
           type: string
       required:
         - email

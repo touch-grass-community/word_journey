@@ -80,7 +80,7 @@ var routes = Routes{
 	Route{
 		"AddWordPost",
 		strings.ToUpper("Post"),
-		"/api/addWord",
+		"/api/words",
 		controllers.PostNewWord,
 	},
 

@@ -92,7 +92,10 @@ export default function LoginPage() {
 
     let isValid = true;
 
-    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+    if (
+      !email ||
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+    ) {
       setEmailError(true);
       setEmailErrorMessage("Please enter a valid email address.");
       isValid = false;
@@ -101,9 +104,16 @@ export default function LoginPage() {
       setEmailErrorMessage("");
     }
 
-    if (!password || password.length < 6) {
+    if (
+      !password ||
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+        password
+      )
+    ) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
+      setPasswordErrorMessage(
+        "Password must be at least 8 characters long, include one uppercase letter, one number, and one special character (@$!%*?&)."
+      );
       isValid = false;
     } else {
       setPasswordError(false);

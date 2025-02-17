@@ -7,7 +7,7 @@ export const useDataContext = () => useContext(DataContext);
 
 //* export context for provider
 export const DataContextProvider = ({ children }) => {
-  const isLogged = false;
+  const isLogged = true;
 
   const userLogin = {
     isLogged,

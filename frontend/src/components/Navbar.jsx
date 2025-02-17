@@ -18,6 +18,8 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
+import TranslateIcon from "@mui/icons-material/Translate";
+
 import { useDataContext } from "../context/dataContext";
 
 const theme = createTheme({
@@ -72,7 +74,9 @@ export default function NavBar() {
         <Container maxWidth="xl" sx={{ height: "100%" }}>
           <Toolbar disableGutters sx={{ height: "100%" }}>
             {/* Logo md */}
-            <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+            <TranslateIcon
+              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            />
             <Typography
               variant="h6"
               noWrap
@@ -83,12 +87,12 @@ export default function NavBar() {
                 display: { xs: "none", md: "flex" },
                 fontFamily: "monospace",
                 fontWeight: 700,
-                letterSpacing: ".3rem",
+                letterSpacing: ".1rem",
                 color: "inherit",
                 textDecoration: "none",
               }}
             >
-              LOGO
+              WORD JOURNEY
             </Typography>
 
             {/* Pages List xs  */}
@@ -141,7 +145,9 @@ export default function NavBar() {
             )}
 
             {/* Logo  xs */}
-            <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+            <TranslateIcon
+              sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+            />
             <Typography
               variant="h5"
               noWrap
@@ -153,12 +159,12 @@ export default function NavBar() {
                 flexGrow: 1,
                 fontFamily: "monospace",
                 fontWeight: 700,
-                letterSpacing: ".3rem",
+                letterSpacing: ".1rem",
                 color: "inherit",
                 textDecoration: "none",
               }}
             >
-              LOGO
+              WORD JOURNEY
             </Typography>
 
             {/* Pages List md  */}

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDataContext } from "../context/dataContext";
+
 import {
   Container,
   Box,
@@ -56,6 +58,9 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function LoginPage() {
+  const { userLogin } = useDataContext();
+  const { fetchLogin } = userLogin;
+
   const initialValuesUserForm = {
     email: "",
     password: "",
@@ -83,7 +88,8 @@ export default function LoginPage() {
     if (emailError || passwordError) {
       return;
     }
-    console.log("Submit", userForm);
+
+    fetchLogin(userForm);
   };
 
   const validateInputs = () => {

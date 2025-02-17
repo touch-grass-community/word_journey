@@ -1,4 +1,6 @@
-import * as React from "react";
+import { useEffect } from "react";
+import { useDataContext } from "../context/dataContext";
+
 import {
   Container,
   Grid2,
@@ -20,6 +22,9 @@ const bull = (
 );
 
 export default function YourWordsPage() {
+  const { fetchGetAllWords } = useDataContext();
+  useEffect(fetchGetAllWords, []);
+
   return (
     <main>
       <Container maxWidth="xl">

@@ -48,7 +48,7 @@ export default function NavBar() {
   ];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
   const { userLogin } = useDataContext();
-  const { isLogged } = userLogin;
+  const { isUserLogged } = userLogin;
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -96,7 +96,7 @@ export default function NavBar() {
             </Typography>
 
             {/* Pages List xs  */}
-            {isLogged ? (
+            {isUserLogged ? (
               <>
                 <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                   <IconButton
@@ -168,7 +168,7 @@ export default function NavBar() {
             </Typography>
 
             {/* Pages List md  */}
-            {isLogged ? (
+            {isUserLogged ? (
               <>
                 <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                   {pages.map((page, index) => (
@@ -189,7 +189,7 @@ export default function NavBar() {
             )}
 
             {/* Menu Profile */}
-            {isLogged ? (
+            {isUserLogged ? (
               <Box sx={{ flexGrow: 0, marginLeft: "auto" }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

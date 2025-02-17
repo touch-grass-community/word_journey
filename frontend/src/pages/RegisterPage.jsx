@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Container,
   Box,
@@ -56,6 +57,8 @@ const RegisterContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function RegisterPage() {
+  const serverUrl = import.meta.env.VITE_SERVER_FULL_URL;
+
   const initialValuesNewUserForm = {
     username: "",
     email: "",
@@ -88,6 +91,21 @@ export default function RegisterPage() {
     }
 
     console.log("Submit", newUserForm);
+
+    fetch(`${serverUrl}/api/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUserForm),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const validateInputs = () => {
@@ -166,7 +184,7 @@ export default function RegisterPage() {
               variant="h4"
               sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
             >
-              Register
+              Registra un nuovo account
             </Typography>
             <Box
               component="form"
@@ -196,7 +214,7 @@ export default function RegisterPage() {
                   required
                   fullWidth
                   variant="outlined"
-                  color={usernameError ? "error" : "primary"}
+                  color={emailError ? "error" : "primary"}
                 />
               </FormControl>
 

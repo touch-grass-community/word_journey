@@ -16,7 +16,12 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 
 export default function NavBar() {
-  const pages = ["Homepage", "About Us"];
+  const pages = [
+    { name: "Aggiungi Parola", urlName: "add-words" },
+    { name: "Le Mie Parole", urlName: "your-words" },
+    { name: "Impara", urlName: "learn" },
+    { name: "Quiz", urlName: "quiz" },
+  ];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -87,14 +92,16 @@ export default function NavBar() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
+              {pages.map((page, index) => (
                 <MenuItem
-                  key={page}
+                  key={index}
                   component={Link}
-                  to={`/${page.toLowerCase().replace(" ", "-")}`}
+                  to={`/${page.urlName.toLowerCase().replace(" ", "-")}`}
                   onClick={handleCloseNavMenu}
                 >
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                  <Typography sx={{ textAlign: "center" }}>
+                    {page.name}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -123,11 +130,11 @@ export default function NavBar() {
               <Button
                 key={index}
                 component={Link}
-                to={`/${page.toLowerCase().replace(" ", "-")}`}
+                to={`/${page.urlName.toLowerCase().replace(" ", "-")}`}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>

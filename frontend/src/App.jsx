@@ -5,8 +5,8 @@ import DefaultLayout from "./layouts/DefaultLayout";
 
 import { DataContextProvider } from "./context/dataContext";
 
-import HomePage from "./pages/HomePage";
-import AboutUsPage from "./pages/AboutUsPage";
+import AddWordsPage from "./pages/AddWordsPage";
+import YourWordsPage from "./pages/YourWordsPage";
 
 function App() {
   return (
@@ -15,9 +15,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route Component={DefaultLayout}>
-              <Route index path="/" Component={HomePage} />
-              <Route index path="/homepage" Component={HomePage} />
-              <Route path="/about-us" Component={AboutUsPage} />
+              <Route index path="/" Component={AddWordsPage} />
+              <Route index path="/add-words" Component={AddWordsPage} />
+              <Route path="/your-words" Component={YourWordsPage} />
             </Route>
           </Routes>
         </BrowserRouter>

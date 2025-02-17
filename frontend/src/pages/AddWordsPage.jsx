@@ -12,6 +12,7 @@ import {
   List,
   ListItem,
   IconButton,
+  DialogTitle,
 } from "@mui/material";
 
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -22,7 +23,7 @@ const Demo = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export default function HomePage() {
+export default function AddWordsPage() {
   const initialValues = {
     word: {
       nativeTranslations: [""],
@@ -93,7 +94,10 @@ export default function HomePage() {
   return (
     <main>
       <Container maxWidth="xl">
-        <h2>Homepage</h2>
+        {/* Title */}
+        <Grid2 sx={{ textAlign: "center" }}>
+          <h1>Aggiungi una parola...</h1>
+        </Grid2>
 
         {/* Form add new word */}
         <Grid2
@@ -123,7 +127,9 @@ export default function HomePage() {
               onChange={handleChange}
               required
             />
+          </Grid2>
 
+          <Grid2 sx={{ textAlign: "center", alignSelf: "center" }}>
             <ArrowForwardIosIcon></ArrowForwardIosIcon>
           </Grid2>
 
